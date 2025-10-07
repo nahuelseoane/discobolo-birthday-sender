@@ -13,7 +13,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-from discobolo.config.config import (
+from config import (
     CREDENTIALS_PATH,
     EMAIL_PASSWORD,
     EMAIL_USER,
@@ -24,14 +24,17 @@ from discobolo.config.config import (
     TOKEN_PATH,
 )
 
-SCOPES = ["https://www.googleapis.com/auth/contacts.readonly"]
+SCOPES = [
+    "https://www.googleapis.com/auth/contacts.readonly",
+    "https://www.googleapis.com/auth/spreadsheets",
+]
 
 LOG_PATH = Path(__file__).parent / "sent_birthdays.csv"
 
 
 def already_sent(email, today=None):
     today = today or datetime.datetime.now().strftime("%Y-%m-%d")
-    if not LOG_PATH.exists:
+    if not LOG_PATH.exists():
         return False
 
     with open(LOG_PATH, newline="", encoding="utf-8") as f:
@@ -85,21 +88,42 @@ def obtain_resource_group_name(service, group_name, fallback_resource_name=None)
 
 ## 1
 def authenticate():
+    cred_path = CREDENTIALS_PATH or "credentials.json"
+    token_path = TOKEN_PATH or "token.json"
     creds = None
-    if os.path.exists(TOKEN_PATH):
-        creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
 
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+    def reauth():
+        flow = InstalledAppFlow.from_client_secrets_file(cred_path, SCOPES)
+        creds_local = flow.run_local_server(
+            port=8080,
+            access_type="offline",
+            prompt="consent",
+            open_browser=False,
+            include_granted_scopes="true",  # <- must be "true" or "false" (string)
+        )
+        with open(token_path, "w") as f:
+            f.write(creds_local.to_json())
+        return creds_local
+
+    if os.path.exists(token_path):
+        creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+    if not creds:
+        return reauth()
+
+    desired = set(SCOPES)
+    saved = set(creds.scopes or [])
+    if not desired.issubset(saved):
+        return reauth()
+
+    if not creds.valid:
+        if creds.expired and creds.refresh_token:
+            try:
+                creds.refresh(Request())
+            except RefreshError:
+                return reauth()
         else:
-            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_PATH, SCOPES)
-            creds = flow.run_local_server(
-                port=8080, access_type="offline", prompt="consent"
-            )
+            return reauth()
 
-        with open(TOKEN_PATH, "w") as token:
-            token.write(creds.to_json())
     return creds
 
 

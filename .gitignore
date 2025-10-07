@@ -1,1 +1,16 @@
-.images/
+# Secrets / local
+.env
+credentials.json
+token.json
+sent_birthdays.csv
+
+# Python cruft
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store
