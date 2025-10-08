@@ -75,15 +75,15 @@ def obtain_resource_group_name(service, group_name, fallback_resource_name=None)
     for group in groups:
         group_name_actual = group.get("name", "")
         if group_name_actual.strip().lower() == group_name.strip().lower():
-            print(f"✅ Grupo encontrado: {group_name_actual}")
+            print(f"✅ Group found: {group_name_actual}")
             return group["resourceName"]
 
-        print(f"❌ Group name couldn't be found: {group_name}")
+    print(f"❌ Group name couldn't be found: {group_name}")
 
-        if fallback_resource_name:
-            print(f"➡️ Usando fallback resourceName: {fallback_resource_name}")
-            return fallback_resource_name
-        return None
+    if fallback_resource_name:
+        print(f"➡️ Using fallback resourceName: {fallback_resource_name}")
+        return fallback_resource_name
+    return None
 
 
 ## 1
@@ -248,7 +248,7 @@ def run_birthday_emails():
             record_email_sending(name, email)
 
     else:
-        print("📭 Hoy no cumple nadie (según tus contactos).")
+        print("📭 No one has a birthday today (according to your contacts).")
 
 
 if __name__ == "__main__":
