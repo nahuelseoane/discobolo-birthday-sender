@@ -13,5 +13,5 @@ SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "465"))
 
 # Google Contacts group
-GMAIL_GROUP_ID = os.getenv("GMAIL_GROUP_ID", "DIFUSION SOCIOS 2025")  # your group name
-GMAIL_FALLBACK_ID = os.getenv("GMAIL_FALLBACK_ID")  # resourceName fallback, optional
+GMAIL_GROUP_ID = os.getenv("GMAIL_GROUP_ID", "DIFUSION SOCIOS 2025")
+GMAIL_FALLBACK_ID = os.getenv("GMAIL_FALLBACK_ID")
