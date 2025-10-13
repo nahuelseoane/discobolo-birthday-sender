@@ -9,7 +9,7 @@ Automates daily **birthday greetings** for ***Club de Deportes Discobolo***. If 
 - Runs headlessly in the cloud with **GitHub Actionis** on a daily schedule.
 
 ## 📷 Screenshot
-![Screenshot of Discobolo-birthday-sender](https://i.imgur.com/fbxpxmE)
+![Screenshot of Discobolo-birthday-sender](https://i.imgur.com/fbxpxmE.png)
 
 ## 📂 File Structure
 
@@ -24,3 +24,4 @@ Automates daily **birthday greetings** for ***Club de Deportes Discobolo***. If 
 
 ## 🧑‍💻 Author
 **Nahuel Seoane** - [@nahuelseoane](https://github.com/nahuelseoane)
+Built as part of the Automating Discobolo project.
