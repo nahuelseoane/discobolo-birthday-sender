@@ -1,4 +1,4 @@
-# 📨🎂 Discobbolo Birthday Sender
+# 📨🎂 Discobolo Birthday Sender
 
 Automates daily **birthday greetings** for ***Club de Deportes Discobolo***. If feteches today's birthdays from a Google Contacts group and sends personalized HTML emails (with an embedded image) either locally or via **GitHub Actions** every morning at 09:00 (Argentina).
 
